@@ -45,12 +45,24 @@ router.get('/joingroup', function(req, res, next){
 });
 
 router.post('/addPost', function(req, res, next){
-  token.addPost(req.body.token, req.body.groupName, req.body.Title, req.body.content, function(err){
+  token.addPost(req.body.token, req.body.groupName, req.body.title, req.body.content, function(err){
     if(err){
       return res.json({error: err, message: "Could not add post."});
     }
     res.json({message: "Post added."});
   })
-})
+});
+
+router.post('/getGroups', function(req, res, next){
+  token.getGroups(req.body.token, function(err, data){
+    if(err){
+      return res.json({error: err, message: "There was an issue retrieving the groups."});
+    }
+    res.json({
+      message: "Here are the groups.",
+      groups: data
+    });
+  })
+});
 
 module.exports = router;
