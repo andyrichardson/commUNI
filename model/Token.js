@@ -82,8 +82,16 @@ module.exports.getPosts = function(token, groupName, callback){
       return callback(err);
     }
     else{
-      var query = `MATCH (p:Post)-[:in_group]->(n:Group {name: "${groupName}"})  return p`
-      db.query(query, callback);
+      var query = `MATCH (p:Post)-[:in_group]->(n:Group {name: "${groupName}"}) return p`
+      db.query(query, function(err, posts){
+        posts.forEach(function(el){
+          query = `MATCH (p:Post)-[:has_comment]->(c:Comment) WHERE ID(p) = ${el.id} return c`;
+          db.query(query, function(err, comments){
+              posts.comment = comments;
+              callback(err, posts);
+          });
+        })
+      });
     }
   });
 }
@@ -112,12 +120,7 @@ module.exports.addComment = function(token, postId, comment, callback){
 //   console.log(data);
 // });
 //
-// module.exports.getPosts("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", "Gains", function(err, data){
-//   console.log(err);
-//   console.log(data);
-// })
-
-module.exports.addComment("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", 12, "hello there", function(err, data){
+module.exports.getPosts("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", "Gains", function(err, data){
   console.log(err);
   console.log(data);
-});
+})
