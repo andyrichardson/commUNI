@@ -30,8 +30,14 @@ router.post('/login', function(req, res, next) {
   });
 });
 
-router.post('/newgroup', function(req, res, next){
-  res.json({message: "Make a new group here"});
+router.post('/addgroup', function(req, res, next){
+  token.addGroup(req.body.token, req.body.groupName, function(err){
+    if(err){
+      return res.json({message: "Unable to create group.", error:  err});
+    }
+    //return token also?
+    res.json({message: "Group created."});
+  })
 });
 
 router.get('/joingroup', function(req, res, next){
