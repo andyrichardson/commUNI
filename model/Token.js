@@ -62,6 +62,7 @@ module.exports.addPost = function(token, groupName, title, content, callback){
   });
 }
 
+// Get groups
 module.exports.getGroups = function(token, callback){
   checkToken(token, function(err){
     if(err){
@@ -87,18 +88,36 @@ module.exports.getPosts = function(token, groupName, callback){
   });
 }
 
-module.exports.login("abc@abc.com","pass", function(err,data){
+// Add comment
+module.exports.addComment = function(token, postId, comment, callback){
+  checkToken(token, function(err){
+    if(err){
+      return callback(err);
+    }
+    else{
+      var query = `MATCH (p:Post) WHERE ID(p) = ${postId} CREATE (p)-[:has_comment]->(c:Comment {content: "${comment}"}) RETURN c`
+      db.query(query, callback);
+    }
+  });
+}
+
+// module.exports.login("abc@abc.com","pass", function(err,data){
+//   console.log(err);
+//   console.log(data);
+//
+// });
+//
+// module.exports.getGroup("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU","Gains",function(err,data){
+//   console.log(err);
+//   console.log(data);
+// });
+//
+// module.exports.getPosts("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", "Gains", function(err, data){
+//   console.log(err);
+//   console.log(data);
+// })
+
+module.exports.addComment("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", 12, "hello there", function(err, data){
   console.log(err);
   console.log(data);
-
 });
-
-module.exports.getGroup("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU","Gains",function(err,data){
-  console.log(err);
-  console.log(data);
-});
-
-module.exports.getPosts("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", "Gains", function(err, data){
-  console.log(err);
-  console.log(data);
-})
