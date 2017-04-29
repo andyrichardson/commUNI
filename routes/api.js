@@ -44,4 +44,13 @@ router.get('/joingroup', function(req, res, next){
   res.json({message: "Join groups here"});
 });
 
+router.post('/addPost', function(req, res, next){
+  token.addPost(req.body.token, req.body.groupName, req.body.Title, req.body.content, function(err){
+    if(err){
+      return res.json({error: err, message: "Could not add post."});
+    }
+    res.json({message: "Post added."});
+  })
+})
+
 module.exports = router;
