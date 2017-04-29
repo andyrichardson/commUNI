@@ -1,5 +1,5 @@
 var db = require('seraph')({
-  server: "http://localhost:7474",
+  server: "http://192.168.99.100:7474/",
   user: "neo4j",
   pass: "pass"
 });
@@ -8,6 +8,9 @@ const tokenpass = "secrettoken";
 
 // Register
 module.exports.register = function(first, last, email, password, callback){
+  if (!email.includes("@essex.ac.uk")) {
+    return callback("Not a valid email address")
+  }
   var query = `CREATE (n:User {firstName: "${first}", lastName: "${last}", email: "${email}", password: "${password}"})`
   db.query(query, callback);
 }
@@ -25,3 +28,8 @@ module.exports.login = function(email, password, callback){
     }
   });
 }
+
+module.exports.register("aa", "bbb", "ccc@essex.ac.uk", "ddd",function(err, data) {
+  console.log(err);
+  console.log(data);
+})
