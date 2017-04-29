@@ -34,7 +34,7 @@ module.exports.login = function(email, password, callback){
   });
 }
 
-//Groups
+// Groups
 module.exports.addGroup = function(token, groupName, callback){
   // User authenticated
   checkToken(token, function(err){
@@ -48,7 +48,7 @@ module.exports.addGroup = function(token, groupName, callback){
   });
 }
 
-//Posts
+// Posts
 module.exports.addPost = function(token, groupName, title, content, callback){
   // User authenticated
   checkToken(token, function(err){
@@ -57,40 +57,48 @@ module.exports.addPost = function(token, groupName, title, content, callback){
     }
     else{
       var query = `MATCH (n:Group {name: "${groupName}"}) CREATE (p:Post {title: "${title}", content: "${content}"})-[:in_group]->(n)  return p`
-      db.query(query, callback)
+      db.query(query, callback);
     }
   });
 }
 
 module.exports.getGroup = function(token, groupName, callback){
-  // User authenticated
   checkToken(token, function(err){
     if(err){
       return callback(err);
     }
     else{
-      var query = `MATCH (n:Group) return n`
-      db.query(query, callback)
+      var query = `MATCH (n:Group) return n`;
+      db.query(query, callback);
     }
   });
 }
 
-// module.exports.login("abc@abc.com","pass", function(err,data){
-//   console.log(err);
-//   console.log(data);
-//
-// });
-//
-// module.exports.addGroup("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU","Gains",function() {
-//
-// })
-//
-// module.exports.addPost("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", "Gains", "Omg Jake got me pregnant", "Don't know how because I though he destroyed my pussy", function(err, data) {
-//   console.log(err);
-//   console.log(data);
-// });
+// Get Posts
+module.exports.getPosts = function(token, groupName, callback){
+  checkToken(token, function(err){
+    if(err){
+      return callback(err);
+    }
+    else{
+      var query = `MATCH (p:Post)-[:in_group]->(n:Group {name: "${groupName}"})  return p`
+      db.query(query, callback);
+    }
+  });
+}
+
+module.exports.login("abc@abc.com","pass", function(err,data){
+  console.log(err);
+  console.log(data);
+
+});
 
 module.exports.getGroup("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU","Gains",function(err,data){
   console.log(err);
   console.log(data);
 });
+
+module.exports.getPosts("eyJhbGciOiJIUzI1NiJ9.YWJjQGFiYy5jb20.9XxKmvxhI-f_pKjTXvjDzg1fsIeysq9IwbcdlCeYSuU", "Gains", function(err, data){
+  console.log(err);
+  console.log(data);
+})
