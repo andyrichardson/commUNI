@@ -1,13 +1,21 @@
+var config = require("../private/config");
 var db = require('seraph')({
-  server: "http://localhost:7474",
+  server: config.database,
   user: "neo4j",
   pass: "pass"
 });
 var jwt = require('jsonwebtoken');
 const tokenpass = "secrettoken";
 
+var checkToken = function(token, callback){
+  jwt.verify(token, tokenpass, callback);
+}
+
 // Register
 module.exports.register = function(first, last, email, password, callback){
+  if (!email.includes("@essex.ac.uk")) {
+    return callback("Not a valid email address")
+  }
   var query = `CREATE (n:User {firstName: "${first}", lastName: "${last}", email: "${email}", password: "${password}"})`
   db.query(query, callback);
 }
@@ -22,6 +30,20 @@ module.exports.login = function(email, password, callback){
     }
     else{
       callback("invalid")
+    }
+  });
+}
+
+//Groups
+module.exports.addGroup = function(token, groupName, callback){
+  // User authenticated
+  checkToken(token, function(err){
+    if(err){
+      return callback(err);
+    }
+    else{
+      var query = `CREATE (n:Group {name: "${groupName}"}) return n`
+      db.query(query, callback)
     }
   });
 }
