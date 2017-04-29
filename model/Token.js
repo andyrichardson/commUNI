@@ -1,5 +1,6 @@
+var config = require("../private/config");
 var db = require('seraph')({
-  server: "http://192.168.99.100:7474/",
+  server: config.database,
   user: "neo4j",
   pass: "pass"
 });
