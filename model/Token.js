@@ -7,6 +7,10 @@ var db = require('seraph')({
 var jwt = require('jsonwebtoken');
 const tokenpass = "secrettoken";
 
+var checkToken = function(token, callback){
+  jwt.verify(token, tokenpass, callback);
+}
+
 // Register
 module.exports.register = function(first, last, email, password, callback){
   if (!email.includes("@essex.ac.uk")) {
@@ -30,7 +34,16 @@ module.exports.login = function(email, password, callback){
   });
 }
 
-module.exports.register("aa", "bbb", "ccc@essex.ac.uk", "ddd",function(err, data) {
-  console.log(err);
-  console.log(data);
-})
+//Groups
+module.exports.addGroup = function(token, groupName, callback){
+  // User authenticated
+  checkToken(token, function(err){
+    if(err){
+      return callback(err);
+    }
+    else{
+      var query = `CREATE (n:Group {name: "${groupName}"}) return n`
+      db.query(query, callback)
+    }
+  });
+}
