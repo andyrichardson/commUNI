@@ -74,4 +74,14 @@ router.post('/getPosts', function(req, res, next){
   });
 });
 
+
+router.post('/addComment', function(req, res, next){
+  token.addComment(req.body.token, req.body.postId, req.body.comment, function(err){
+    if(err){
+      return res.json({error: err, message: "Unable to add post."})
+    }
+    res.json({message: "Comment added."})
+  });
+});
+
 module.exports = router;
