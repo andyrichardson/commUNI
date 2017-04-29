@@ -62,7 +62,7 @@ module.exports.addPost = function(token, groupName, title, content, callback){
   });
 }
 
-module.exports.getGroup = function(token, groupName, callback){
+module.exports.getGroups = function(token, callback){
   checkToken(token, function(err){
     if(err){
       return callback(err);
