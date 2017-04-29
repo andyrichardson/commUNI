@@ -65,4 +65,13 @@ router.post('/getGroups', function(req, res, next){
   })
 });
 
+router.post('/getPosts', function(req, res, next){
+  token.getPosts(req.body.token, req.body.groupName, function(err, data){
+    if(err){
+      return res.json({error: err, message: "Unable to retrieve posts."});
+    }
+    res.json({posts: data, message: "Posts retrieved."})
+  });
+});
+
 module.exports = router;
