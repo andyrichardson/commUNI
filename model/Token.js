@@ -1,31 +1,27 @@
 var db = require('seraph')({
-  server: "http://192.168.99.100:7474",
+  server: "http://localhost:7474",
   user: "neo4j",
   pass: "pass"
 });
+var jwt = require('jsonwebtoken');
+const tokenpass = "secrettoken";
 
-module.exports.register = function(first, last, email){
-  var query = `CREATE (n:User {firstName: "${first}", lastName: "${last}", email: "${email}"})`
-  db.query(query, function(err, done){
-    if(err){
-      console.log(err);
-    }
-  });
+// Register
+module.exports.register = function(first, last, email, password, callback){
+  var query = `CREATE (n:User {firstName: "${first}", lastName: "${last}", email: "${email}", password: "${password}"})`
+  db.query(query, callback);
 }
 
-module.exports.login = function(email, password){
+// Login
+module.exports.login = function(email, password, callback){
   var query = `MATCH (n:User {email: "${email}", password: "${password}"}) return n`
   db.query(query, function(err, done){
-    if(err){
-      console.log(err);
-    }
     if(done[0] !== undefined){
-      console.log('we good');
+      var token = jwt.sign(done[0].email, tokenpass);
+      callback(undefined, token);
     }
     else{
-      console.log('nahh mate');
+      callback("invalid")
     }
   });
 }
-
-module.exports.login("abc@abc.com","pass")
