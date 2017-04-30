@@ -15,32 +15,25 @@ $(document).ready(function() {
   })
   .done(function(data) {
     data.groups.forEach(function(el){
-      $("#group-list").append('<a class="group-link" data-target="' + el.name + '">' + el.name + "</a> <br>")
+      $("#group-list").append($('<a class="group-link" data-target="' + el.name + '">' + el.name + "</a> <br>"));
     })
   })
 
-
-  $("#submit").on('click', function(event) {
-    event.preventDefault(event);
-    const password = $("#password").val();
-    const username = $("#username").val();
+  $(document).on('click', ".group-link", function(event) {
     $.ajax({
-      url: '/api/groups',
+      url: '/api/getPosts',
       type: 'POST',
       dataType: 'json',
       data: {
-        email: username,
-        password: password
+        token: getCookieValue('token'),
+        groupName: $(this).data('target')
       }
     })
     .done(function(data) {
-      if(data.token === undefined){
-        return alert("unable to log in");
-      }
-
-      document.cookie = "token=" + data.token;
-      window.location.href = "/uniofessex";
-    });
+      data.posts.forEach(function(el){
+        $("#post-list").append('<div class="post"><div class="post-title">' + el.title + '</div>' + '<div class="post-content">' + el.content + '</div></div>');
+      })
+    })
   });
 });
 
