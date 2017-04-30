@@ -3,8 +3,22 @@ var getCookieValue = function(a) {
     return b ? b.pop() : '';
 }
 
+
 $(document).ready(function() {
-  alert(getCookieValue('token'));
+  $.ajax({
+    url: '/api/getGroups',
+    type: 'POST',
+    dataType: 'json',
+    data: {
+      token: getCookieValue('token')
+    }
+  })
+  .done(function(data) {
+    data.groups.forEach(function(el){
+      $("#group-list").append('<a class="group-link" data-target="' + el.name + '">' + el.name + "</a> <br>")
+    })
+  })
+
 
   $("#submit").on('click', function(event) {
     event.preventDefault(event);
