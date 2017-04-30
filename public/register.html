@@ -23,6 +23,8 @@
     <!-- Just for debugging purposes. Don't actually copy these 2 lines! -->
     <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script><![endif]-->
     <script src="assets/js/ie-emulation-modes-warning.js"></script>
+    <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
+    <script src="javascripts/register.js"></script>
 
     <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
     <!--[if lt IE 9]>
@@ -65,31 +67,31 @@
 			<table cellpadding="10">
 				<tr style="padding-bottom: 1em">
 					<td>First Name: </td>
-					<td><input type="text" name="uFName"><td>
+					<td><input id="first" type="text" name="uFName"><td>
 				</tr>
 				<tr>
 					<td>Last Name: </td>
-					<td><input type="text" name="uLName"></td>
+					<td><input id="last" type="text" name="uLName"></td>
 				</tr>
 				<tr>
 					<td>Email: </td>
-					<td><input type="text" name="uEmail"></td>
+					<td><input id="email" type="text" name="uEmail"></td>
 				</tr>
 				<tr>
 					<td>Password: </td>
-					<td><input type="password" name="uPass"></td>
+					<td><input id="password" type="password" name="uPass"></td>
 				</tr>
 				<tr>
 					<td>Confirm Password:  </td>
-					<td><input type="password" name="uCPass"></td>
+					<td><input id="confirm" type="password" name="uCPass"></td>
 				</tr>
 			</table>
-			<input type="submit" value="Register" name="Register" style="
+			<input id="submit" type="submit" value="Register" name="Register" style="
 				width:100px;
 				height:25px;
-				margin: -20px -50px; 
+				margin: -20px -50px;
 				position:relative;
-				top:50%; 
+				top:50%;
 				left:50%;">
 		</form>
       </div>
