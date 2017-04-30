@@ -88,7 +88,7 @@ module.exports.getPosts = function(token, groupName, callback){
           query = `MATCH (p:Post)-[:has_comment]->(c:Comment) WHERE ID(p) = ${el.id} return c`;
           db.query(query, function(err, comments){
               posts.comment = comments;
-              callback(err, posts);
+              return callback(err, posts);
           });
         })
       });

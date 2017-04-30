@@ -13,12 +13,12 @@ router.post('/register', function(req, res, next){
     if(err){
       return res.json({message: "unable to register"});
     }
-    res.json({message: "registration successful"});
+    return res.json({message: "registration successful"});
   });
 });
 
 router.get('/', function(req, res, next){
-  res.json({user: "joe", password:"test"});
+  return res.json({user: "joe", password:"test"});
 });
 
 router.post('/login', function(req, res, next) {
@@ -26,7 +26,7 @@ router.post('/login', function(req, res, next) {
     if(err){
       return res.json({message: "Unable to log you in."});
     }
-    res.json({token: token, message: "login successful"});
+    return res.json({token: token, message: "login successful"});
   });
 });
 
@@ -36,12 +36,12 @@ router.post('/addgroup', function(req, res, next){
       return res.json({message: "Unable to create group.", error:  err});
     }
     //return token also?
-    res.json({message: "Group created."});
+    return res.json({message: "Group created."});
   })
 });
 
 router.get('/joingroup', function(req, res, next){
-  res.json({message: "Join groups here"});
+  return res.json({message: "Join groups here"});
 });
 
 router.post('/addPost', function(req, res, next){
@@ -49,7 +49,7 @@ router.post('/addPost', function(req, res, next){
     if(err){
       return res.json({error: err, message: "Could not add post."});
     }
-    res.json({message: "Post added."});
+    return res.json({message: "Post added."});
   })
 });
 
@@ -58,7 +58,7 @@ router.post('/getGroups', function(req, res, next){
     if(err){
       return res.json({error: err, message: "There was an issue retrieving the groups."});
     }
-    res.json({
+    return res.json({
       message: "Here are the groups.",
       groups: data
     });
@@ -70,7 +70,8 @@ router.post('/getPosts', function(req, res, next){
     if(err){
       return res.json({error: err, message: "Unable to retrieve posts."});
     }
-    res.json({posts: data, message: "Posts retrieved."})
+    
+    return res.end(JSON.stringify({posts: data, message: "Posts retrieved."}));
   });
 });
 
@@ -80,7 +81,7 @@ router.post('/addComment', function(req, res, next){
     if(err){
       return res.json({error: err, message: "Unable to add post."})
     }
-    res.json({message: "Comment added."})
+    return res.json({message: "Comment added."})
   });
 });
 
