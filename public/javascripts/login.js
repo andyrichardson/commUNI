@@ -18,7 +18,7 @@ $(document).ready(function() {
       }
 
       document.cookie = "token=" + data.token;
-      window.location.href = "/uniofessex";
+      window.location.href = "/groups";
     });
   });
 });
